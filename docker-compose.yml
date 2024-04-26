@@ -1,0 +1,29 @@
+volumes:
+  media:
+
+services:
+  postgres_proexe:
+    image: postgres:13.5
+    environment:
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - type: bind
+        source: ./postgres_proexe/
+        target: /var/lib/postgresql/data
+        bind:
+          create_host_path: true
+    ports:
+      - target: 5432
+        published: 1302
+        mode: host
+
+  proexe:
+    build: .
+    environment:
+      DEBUG: "True"
+      DB_HOST: postgres_proexe
+      DB_PORT: 5432
+      APP_PATH: "/"
+    ports:
+      - "8000:8000"
+

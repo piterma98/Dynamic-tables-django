@@ -1,0 +1,65 @@
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+src_paths = "app/"
+
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "app/"
+plugins = ["mypy_django_plugin.main"]
+check_untyped_defs = true
+namespace_packages = true
+no_implicit_optional = true
+no_implicit_reexport = true
+strict_equality = true
+warn_redundant_casts = true
+
+[[tool.mypy.overrides]]
+module = [
+    "debug_toolbar.*",
+    "django_filters.*",
+    "factory.*",
+    "graphene_django.*",
+    "graphene_file_upload.*",
+    "graphene.*",
+    "graphql_jwt.*",
+    "jose.*",
+    "sorl.thumbnail.*",
+    "sklearn.*"
+    ]
+ignore_missing_imports = true
+
+
+[tool.django-stubs]
+django_settings_module = "proexe.settings"
+
+[tool.ruff]
+extend-exclude = [
+    ".venv",
+]
+lint.ignore = [
+    "E402",
+    "E501",
+]
+lint.select = [
+    "E",
+    "F",
+    "W",
+]
+
+[tool.coverage.report]
+omit = [
+    "tests/*",
+    "*/site-packages/*",
+    "venv/lib/*",
+    "scripts/*",
+    "admin.py",
+    "settings.py",
+    "urls.py",
+]
+
+[tool.pytest.ini_options]
+norecursedirs = "postgres_proexe"
+addopts = "--no-migrations"
+DJANGO_SETTINGS_MODULE = "proexe.settings"
+python_files = "tests.py test_*.py *_tests.py"
