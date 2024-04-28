@@ -17,7 +17,9 @@ def test_get_table_model_attrs_from_fields() -> None:
         {"name": "price", "type": "number"},
         {"name": "is_valid", "type": "boolean"},
     ]
+
     model_fields = get_table_model_attrs_from_fields(fields)
+
     assert {
         "__module__": "app.table.models",
         "name": ANY,
@@ -47,11 +49,9 @@ def test_create_dynamic_model_class() -> None:
         {"name": "is_valid", "type": "boolean"},
     ]
     model_fields = get_table_model_attrs_from_fields(fields)
+
     model = create_dynamic_model_class(model_name="Testing", fields=model_fields)
-    assert str(
-        model._meta.fields
-        == "(<django.db.models.fields.BigAutoField: id>, <django.db.models.fields.CharField: name>, <django.db.models.fields.IntegerField: price>, <django.db.models.fields.BooleanField: is_valid>)"
-    )
+
     assert model.__name__ == "Testing"
     assert model.__doc__ == "Testing(id, name, price, is_valid)"
     assert isinstance(model, models.base.ModelBase)
@@ -65,7 +65,9 @@ def test_get_dynamic_model_by_name() -> None:
         {"name": "is_valid", "type": "boolean"},
     ]
     model_fields = get_table_model_attrs_from_fields(fields)
+
     model = create_dynamic_model_class(model_name="DynamicTable", fields=model_fields)
+
     dynamic_model = get_dynamic_model_by_name("DynamicTable")
     assert model == dynamic_model
 
@@ -88,9 +90,11 @@ def test_update_dynamic_model_fields() -> None:
         model_name="TableWithNewField", fields=model_fields
     )
     new_field = [{"name": "status", "type": "string"}]
+
     model = update_dynamic_model_fields(
         model, get_table_model_attrs_from_fields(new_field)
     )
+
     assert (
         model.__doc__
         == "TableWithNewField(id, name, price, is_valid, tablewithnewfield_ptr, status)"

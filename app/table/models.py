@@ -6,10 +6,8 @@ from django.db import connections, models
 
 def get_table_model_attrs_from_fields(fields: list[dict[str, str]]) -> dict[str, Any]:
     attrs: dict[str, Any] = {"__module__": "app.table.models"}
-
     if not fields:
         raise ValueError("Empty fields list passed")
-
     for field in fields:
         if field["type"] == "string":
             attrs[field["name"]] = models.CharField(null=True, blank=True)
@@ -21,12 +19,11 @@ def get_table_model_attrs_from_fields(fields: list[dict[str, str]]) -> dict[str,
             raise ValueError(
                 "Unsupported field type. Supported types are 'string', 'number' and 'boolean'."
             )
-
     return attrs
 
 
 def create_dynamic_model_class(
-    model_name, fields: dict[str, Any]
+    model_name: str, fields: dict[str, Any]
 ) -> type[models.Model]:
     class Meta:
         pass

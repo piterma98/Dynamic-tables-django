@@ -100,7 +100,12 @@ def test_add_row(client: APIClient) -> None:
     response = client.post(url, data=data, format="json")
 
     assert response.status_code == status.HTTP_201_CREATED
-    assert response.json() == {'id': 1, 'name': 'test', 'price': '500', 'is_valid': 'True'}
+    assert response.json() == {
+        "id": 1,
+        "name": "test",
+        "price": "500",
+        "is_valid": "True",
+    }
 
 
 @pytest.mark.django_db
@@ -115,8 +120,7 @@ def test_list_rows(client: APIClient) -> None:
         model_name="TableWithNewField", fields=model_fields
     )
     create_model_from_dynamic_model(model)
-    model = model(name="test", price=500, is_valid=True)
-    model.save()
+    model(name="test", price=500, is_valid=True).save()
 
     url = reverse("list-rows", kwargs={"id": "TableWithNewField"})
     response = client.get(url)

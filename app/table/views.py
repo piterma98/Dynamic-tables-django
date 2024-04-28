@@ -40,7 +40,7 @@ def generate_dynamic_model(request: Request) -> Response:
 def update_dynamic_model(request: Request, id: str) -> Response:
     model = get_dynamic_model_by_name(id)
     serializer = UpdateTableSerializer(data=request.data)
-    if serializer.is_valid():
+    if serializer.is_valid() and model:
         update_dynamic_model_fields(
             model, get_table_model_attrs_from_fields(serializer.data["fields"])
         )
@@ -56,19 +56,22 @@ def update_dynamic_model(request: Request, id: str) -> Response:
 )
 @api_view(["POST"])
 def add_row(request: Request, id: str) -> Response:
-    model = get_dynamic_model_by_name(id)()
+    model = get_dynamic_model_by_name(id)
     serializer = ListSerializer(child=TableRowSerializer(), data=request.data)
-    if serializer.is_valid():
+    if serializer.is_valid() and model:
+        obj = model()
         try:
             for data in serializer.data:
-                setattr(model, data["name"], data["value"])
-            model.save()
+                setattr(obj, data["name"], data["value"])
+            obj.save()
         except Exception:
             return Response(
                 status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(
-            data=model_to_dict(model, fields=[field.name for field in model._meta.fields]),
+            data=model_to_dict(
+                obj, fields=[field.name for field in obj._meta.fields]
+            ),
             status=status.HTTP_201_CREATED,
         )
     return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -78,7 +81,7 @@ def add_row(request: Request, id: str) -> Response:
 def list_rows(request: Request, id: str) -> Response:
     model = get_dynamic_model_by_name(id)
     if model:
-        rows = model.objects.all()
+        rows = model._default_manager.all()
         return Response(
             [
                 model_to_dict(row, fields=[field.name for field in row._meta.fields])
