@@ -113,7 +113,6 @@ test: requirements/.dev.sentinel ensure-database ## Run entire test suite and em
 
 migrate: ## Run database migrations
 	python manage.py migrate
-	python manage.py createcachetable
 
 coverage-report: test ## Emit HTML coverage report after running tests
 	$(virtualenv_coverage) html --rcfile=../pyproject.toml

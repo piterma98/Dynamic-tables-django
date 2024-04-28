@@ -18,6 +18,7 @@ warn_redundant_casts = true
 module = [
     "django_filters.*",
     "factory.*",
+    "rest_framework.*",
     ]
 ignore_missing_imports = true
 
