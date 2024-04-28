@@ -71,8 +71,10 @@ def test_update_dynamic_model(client: APIClient) -> None:
     )
     create_model_from_dynamic_model(model)
     new_field = {"fields": [{"type": "string", "name": "status"}]}
+
     url = reverse("update-dynamic-model", kwargs={"id": model.__name__})
     response = client.put(url, data=new_field, format="json")
+
     assert response.status_code == status.HTTP_200_OK
 
 
