@@ -69,9 +69,7 @@ def add_row(request: Request, id: str) -> Response:
                 status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(
-            data=model_to_dict(
-                obj, fields=[field.name for field in obj._meta.fields]
-            ),
+            data=model_to_dict(obj, fields=[field.name for field in obj._meta.fields]),
             status=status.HTTP_201_CREATED,
         )
     return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -131,5 +131,5 @@ def test_list_rows(client: APIClient) -> None:
     assert response.json() == [
         {"id": 1, "name": "test", "price": 500, "is_valid": True},
         {"id": 2, "name": "text", "price": 2137, "is_valid": False},
-        {"id": 3, "name": "heheszky", "price": 1337, "is_valid": True}
+        {"id": 3, "name": "heheszky", "price": 1337, "is_valid": True},
     ]
