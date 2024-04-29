@@ -121,11 +121,15 @@ def test_list_rows(client: APIClient) -> None:
     )
     create_model_from_dynamic_model(model)
     model(name="test", price=500, is_valid=True).save()
+    model(name="text", price=2137, is_valid=False).save()
+    model(name="heheszky", price=1337, is_valid=True).save()
 
     url = reverse("list-rows", kwargs={"id": "TableWithNewField"})
     response = client.get(url)
 
     assert response.status_code == status.HTTP_200_OK
     assert response.json() == [
-        {"id": 1, "name": "test", "price": 500, "is_valid": True}
+        {"id": 1, "name": "test", "price": 500, "is_valid": True},
+        {"id": 2, "name": "text", "price": 2137, "is_valid": False},
+        {"id": 3, "name": "heheszky", "price": 1337, "is_valid": True}
     ]
