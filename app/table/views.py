@@ -8,6 +8,7 @@ from rest_framework.serializers import ListSerializer
 
 from table.models import (
     create_dynamic_model_class,
+    create_model_from_dynamic_model,
     get_dynamic_model_by_name,
     get_table_model_attrs_from_fields,
     update_dynamic_model_fields,
@@ -26,8 +27,9 @@ def generate_dynamic_model(request: Request) -> Response:
             model = create_dynamic_model_class(
                 model_name=serializer.data["name"], fields=model_fields
             )
+            create_model_from_dynamic_model(model)
             return Response(
-                {"table_name": model.__name__},
+                {"table_name": model.__name__, "fields": serializer.data["fields"]},
                 status=status.HTTP_200_OK,
             )
         except Exception as e:

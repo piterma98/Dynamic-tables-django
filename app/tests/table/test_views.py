@@ -24,7 +24,14 @@ def test_generate_dynamic_model_view(client: APIClient) -> None:
     url = reverse("generate-dynamic-model")
     response = client.post(url, data=data, format="json")
 
-    assert response.json() == {"table_name": "mytable"}
+    assert response.json() == {
+        "table_name": "mytable",
+        "fields": [
+            {"name": "columnstr", "type": "string"},
+            {"name": "columnnr", "type": "number"},
+            {"name": "columnbool", "type": "boolean"},
+        ],
+    }
     assert response.status_code == status.HTTP_200_OK
 
 
