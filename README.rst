@@ -1,8 +1,8 @@
 ==============
-Proexe-recruitment-task
+Dynamic-tables-django
 ==============
 
-Proexe recruitment task
+Implementation of dynamic tables in django using python type() function
 
 Requirements
 ============
